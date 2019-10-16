@@ -1,0 +1,5 @@
+moviepy
+SpeechRecognition
+google-api-python-client
+pydub
+tqdm
