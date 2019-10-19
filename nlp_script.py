@@ -62,6 +62,16 @@ def convert_stamps_to_datetime (start_datetime, stamp):
     tst_datetime = tst_datetime.strftime("%Y-%m-%d %H:%M:%S.%f")
     return(tst_datetime)
 
+
+def sentiment_analyzer_score(sentence):
+    
+    analyser = SentimentIntensityAnalyzer()
+    score = analyser.polarity_scores(sentence)
+    
+    return(score['compound'])
+
+
+
 def count_words_in_json (json_path, target_words, start_datetime, out_path):
 
     with open(json_path) as fhandler:
@@ -74,11 +84,13 @@ def count_words_in_json (json_path, target_words, start_datetime, out_path):
         text = stem_words(text)
         words_nr = calculate_words_nr(text, target_words)
         stamp_datetime = convert_stamps_to_datetime(start_datetime, obj['time'])
+        sentiment_score = sentiment_analyzer_score(obj['text'])
     
         obj['text'] = obj['text']
         obj['text_clean'] = text
         obj['time'] = stamp_datetime
         obj['words_nr'] = words_nr
+        obj['sentiment_score'] = sentiment_score
     
     with open(out_path, "w") as fhandler:
     
@@ -86,7 +98,5 @@ def count_words_in_json (json_path, target_words, start_datetime, out_path):
         
     return(parsed_json)
 
-new_json = count_words_in_json(input_json_path, target_words, start_datetime)
-
-    
+new_json = count_words_in_json(input_json_path, target_words, start_datetime, out_path)
 
